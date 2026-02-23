@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibletranslate - Traduzione Multilingue</title>
+    <!-- Google Fonts per un typography moderna -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome per icone (opzionale, per una grafica più ricca) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Reset e variabili CSS */
+        :root {
+            --primary-color: #1e3c5c;       /* blu profondo */
+            --secondary-color: #2b5f8a;
+            --accent-color: #e67e22;         /* arancio caldo */
+            --light-bg: #f4f7fb;
+            --card-bg: #ffffff;
+            --text-dark: #2c3e50;
+            --text-light: #6c7a8d;
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --border-radius: 16px;
+            --transition: all 0.25s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.8rem 0;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-image {
+            height: 48px;
+            width: auto;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .logo-image:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: white;
+        }
+
+        /* Hero section semplificata – integrata nel titolo principale */
+        .page-title {
+            text-align: center;
+            margin: 2rem 0 1rem;
+        }
+
+        .page-title h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .page-title p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Sezione traduzione */
+        .translation-section {
+            flex: 1;
+            padding: 1rem 0 3rem;
+        }
+
+        .translation-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 2rem 2.5rem;
+        }
+
+        .search-wrapper {
+            margin-bottom: 1.8rem;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #f1f5f9;
+            border-radius: 60px;
+            padding: 0.5rem 1.2rem;
+            border: 1px solid #e2e8f0;
+            transition: var(--transition);
+        }
+
+        .search-box:focus-within {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.2);
+        }
+
+        .search-box i {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-right: 0.8rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            padding: 0.6rem 0;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .search-box input::placeholder {
+            color: #a0b3c9;
+        }
+
+        .language-list-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .language-list-title h3 {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .language-count {
+            background: #e9edf2;
+            padding: 0.3rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .scroll-box {
+            max-height: 380px;
+            overflow-y: auto;
+            border-radius: 12px;
+            border: 1px solid #edf2f7;
+            background: #f9fcff;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--secondary-color) #e2e8f0;
+        }
+
+        .scroll-box::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scroll-box::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 8px;
+        }
+
+        .scroll-box::-webkit-scrollbar-thumb {
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+        }
+
+        .lang-btn {
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            padding: 1rem 1.2rem;
+            margin: 0.4rem 0;
+            width: 100%;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.05rem;
+            font-weight: 500;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+            color: var(--text-dark);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .lang-btn i {
+            color: var(--accent-color);
+            width: 24px;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .lang-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .lang-btn:hover i {
+            color: white;
+        }
+
+        .lang-btn.hidden {
+            display: none;
+        }
+
+        /* Area di visualizzazione testo e audio */
+        .output-area {
+            background: #f1f5f9;
+            border-radius: 16px;
+            padding: 1.8rem;
+            margin-top: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        #textBox {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.02);
+            border: 1px solid #e9eef3;
+            min-height: 140px;
+            color: #1e293b;
+        }
+
+        .audio-wrapper {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        #audioPlayer {
+            flex: 1;
+            min-width: 240px;
+            height: 44px;
+            border-radius: 30px;
+        }
+
+        .copy-btn {
+            background-color: white;
+            border: 1px solid var(--secondary-color);
+            color: var(--secondary-color);
+            padding: 0.7rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .copy-btn:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: #d0ddee;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .logo-text {
+                font-size: 1.2rem;
+            }
+            .logo-image {
+                height: 40px;
+            }
+            .page-title h1 {
+                font-size: 2rem;
+            }
+            .translation-card {
+                padding: 1.5rem;
+            }
+            .audio-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .copy-btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="https://static.wixstatic.com/media/aaab41_246ad2f755ef43baabe95b3c70a82adf~mv2.png" alt="Logo Bibletranslate" class="logo-image">
+                    <span class="logo-text">Bibletranslate</span>
+                </div>
+                <!-- Possiamo aggiungere un link o icona profilo in futuro -->
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="page-title">
+                <h1>🌍 Traduci in ogni lingua</h1>
+                <p>Seleziona una lingua per leggere e ascoltare il messaggio</p>
+            </div>
+
+            <section class="translation-section">
+                <div class="translation-card">
+                    <!-- Barra di ricerca -->
+                    <div class="search-wrapper">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="languageSearch" placeholder="Cerca lingua (es. Italiano, Inglese...)" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="language-list-title">
+                        <h3><i class="fas fa-language" style="margin-right: 8px; color: var(--accent-color);"></i>Lingue disponibili</h3>
+                        <span class="language-count" id="langCount">41 lingue</span>
+                    </div>
+
+                    <div class="scroll-box" id="languageScrollBox">
+                        <!-- I pulsanti verranno generati qui? No, li abbiamo già statici. 
+                             Ma per il filtro useremo JS. Manteniamo i pulsanti statici con i loro attributi -->
+                        <button class="lang-btn" onclick="playLanguage('italiano')" data-language="italiano"><i class="fas fa-flag"></i> Italiano</button>
+                        <button class="lang-btn" onclick="playLanguage('albanese')" data-language="albanese"><i class="fas fa-flag"></i> Albanese</button>
+                        <button class="lang-btn" onclick="playLanguage('arabo')" data-language="arabo"><i class="fas fa-flag"></i> Arabo</button>
+                        <button class="lang-btn" onclick="playLanguage('bengalese')" data-language="bengalese"><i class="fas fa-flag"></i> Bengalese</button>
+                        <button class="lang-btn" onclick="playLanguage('bulgaro')" data-language="bulgaro"><i class="fas fa-flag"></i> Bulgaro</button>
+                        <button class="lang-btn" onclick="playLanguage('ceco')" data-language="ceco"><i class="fas fa-flag"></i> Ceco</button>
+                        <button class="lang-btn" onclick="playLanguage('cinese')" data-language="cinese"><i class="fas fa-flag"></i> Cinese</button>
+                        <button class="lang-btn" onclick="playLanguage('croato')" data-language="croato"><i class="fas fa-flag"></i> Croato</button>
+                        <button class="lang-btn" onclick="playLanguage('danese')" data-language="danese"><i class="fas fa-flag"></i> Danese</button>
+                        <button class="lang-btn" onclick="playLanguage('estone')" data-language="estone"><i class="fas fa-flag"></i> Estone</button>
+                        <button class="lang-btn" onclick="playLanguage('finlandese')" data-language="finlandese"><i class="fas fa-flag"></i> Finlandese</button>
+                        <button class="lang-btn" onclick="playLanguage('francese')" data-language="francese"><i class="fas fa-flag"></i> Francese</button>
+                        <button class="lang-btn" onclick="playLanguage('giapponese')" data-language="giapponese"><i class="fas fa-flag"></i> Giapponese</button>
+                        <button class="lang-btn" onclick="playLanguage('greco')" data-language="greco"><i class="fas fa-flag"></i> Greco</button>
+                        <button class="lang-btn" onclick="playLanguage('hindi')" data-language="hindi"><i class="fas fa-flag"></i> Hindi</button>
+                        <button class="lang-btn" onclick="playLanguage('inglese')" data-language="inglese"><i class="fas fa-flag"></i> Inglese</button>
+                        <button class="lang-btn" onclick="playLanguage('lituano')" data-language="lituano"><i class="fas fa-flag"></i> Lituano</button>                  
+                        <button class="lang-btn" onclick="playLanguage('malayalam')" data-language="malayalam"><i class="fas fa-flag"></i> Malayalam</button>
+                        <button class="lang-btn" onclick="playLanguage('norvegese')" data-language="norvegese"><i class="fas fa-flag"></i> Norvegese</button>
+                        <button class="lang-btn" onclick="playLanguage('olandese')" data-language="olandese"><i class="fas fa-flag"></i> Olandese</button>
+                        <button class="lang-btn" onclick="playLanguage('pashto')" data-language="pashto"><i class="fas fa-flag"></i> Pashto</button>
+                        <button class="lang-btn" onclick="playLanguage('persiano')" data-language="persiano"><i class="fas fa-flag"></i> Persiano</button>
+                        <button class="lang-btn" onclick="playLanguage('polacco')" data-language="polacco"><i class="fas fa-flag"></i> Polacco</button>
+                        <button class="lang-btn" onclick="playLanguage('portoghese')" data-language="portoghese"><i class="fas fa-flag"></i> Portoghese</button>
+                        <button class="lang-btn" onclick="playLanguage('pidgin')" data-language="pidgin"><i class="fas fa-flag"></i> Pidgin</button>
+                        <button class="lang-btn" onclick="playLanguage('punjabi')" data-language="punjabi"><i class="fas fa-flag"></i> Punjabi</button>
+                        <button class="lang-btn" onclick="playLanguage('rumeno')" data-language="rumeno"><i class="fas fa-flag"></i> Rumeno</button>
+                        <button class="lang-btn" onclick="playLanguage('russo')" data-language="russo"><i class="fas fa-flag"></i> Russo</button>
+                        <button class="lang-btn" onclick="playLanguage('spagnolo')" data-language="spagnolo"><i class="fas fa-flag"></i> Spagnolo</button>
+                        <button class="lang-btn" onclick="playLanguage('svedese')" data-language="svedese"><i class="fas fa-flag"></i> Svedese</button>
+                        <button class="lang-btn" onclick="playLanguage('tagalog')" data-language="tagalog"><i class="fas fa-flag"></i> Tagalog</button>
+                        <button class="lang-btn" onclick="playLanguage('tedesco')" data-language="tedesco"><i class="fas fa-flag"></i> Tedesco</button>
+                        <button class="lang-btn" onclick="playLanguage('turco')" data-language="turco"><i class="fas fa-flag"></i> Turco</button>
+                        <button class="lang-btn" onclick="playLanguage('ungherese')" data-language="ungherese"><i class="fas fa-flag"></i> Ungherese</button>
+                        <button class="lang-btn" onclick="playLanguage('urdu')" data-language="urdu"><i class="fas fa-flag"></i> Urdu</button>
+                        <button class="lang-btn" onclick="playLanguage('ucraino')" data-language="ucraino"><i class="fas fa-flag"></i> Ucraino</button>
+                        <button class="lang-btn" onclick="playLanguage('wolof')" data-language="wolof"><i class="fas fa-flag"></i> Wolof</button>
+                    </div>
+
+                    <!-- Area di output: testo e audio -->
+                    <div class="output-area">
+                        <div id="textBox">👈 Seleziona una lingua per vedere il testo</div>
+                        <div class="audio-wrapper">
+                            <audio id="audioPlayer" controls style="display: none;"></audio>
+                            <button class="copy-btn" id="copyTextBtn"><i class="far fa-copy"></i> Copia testo</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Bibletranslate — Messaggio in oltre 40 lingue | <a href="#">jw.org</a></p>
+            <p style="font-size: 0.9rem; margin-top: 0.5rem;">Condividi il messaggio con chiunque, nella sua lingua ❤️</p>
+        </div>
+    </footer>
+
+    <script>
+        // Testi e link audio (identici all'originale, ma ho aggiunto qualche correzione minore)
+        const texts = {
+            italiano: `Buongiorno. Posso farle una domanda? Conosce il sito web più tradotto al mondo? 
+E il sito JW.ORG gratuito e tradotto in più di 1000 lingue. 
+Contiene argomenti e video utili per tutte le persone. 
+Se lo desidera può prendere il biglietto. 
+Grazie per la sua attenzione. Buona giornata.`,
+
+            albanese: `Mirëmëngjes. A mund të të bëj një pyetje? A e dini se cila është faqja e internetit më e përkthyer në botë?
+Dhe faqja e internetit falas JW.ORG është përkthyer në më shumë se 1000 gjuhë.
+Përmban tema dhe video të dobishme për të gjithë njerëzit.
+Nëse dëshironi, mund të merrni biletën.
+Faleminderit për vëmendjen tuaj. Ditë të mbarë.`,
+
+            arabo: `صباح الخير. هل يمكنني أن أسألك سؤالا؟ هل تعرف الموقع الأكثر ترجمة في العالم؟
+وموقع JW.ORG المجاني مترجم إلى أكثر من 1000 لغة.
+يحتوي على مواضيع وفيديوهات مفيدة لجميع الأشخاص.
+إذا كنت ترغب في ذلك، يمكنك أخذ التذكرة.
+شكرًا لكم على اهتمامكم. يوم جيد.`,
+
+            bengalese: `সুপ্রভাত। আমি কি তোমাকে একটা প্রশ্ন করতে পারি? আপনি কি বিশ্বের সবচেয়ে বেশি অনুবাদিত ওয়েবসাইট জানেন?
+আর বিনামূল্যের JW.ORG ওয়েবসাইটটি ১০০০ টিরও বেশি ভাষায় অনুবাদ করা হয়েছে।
+সকল মানুষের জন্য দরকারী বিষয় এবং ভিডিও রয়েছে।
+তুমি চাইলে টিকিট নিতে পারো।
+আপনার মনোযোগের জন্য ধন্যবাদ। শুভ দিন.`,
+
+            bulgaro: `Добро утро. Мога ли да ви задам един въпрос? Знаете ли кой е най-превежданият уебсайт в света?
+А безплатният уебсайт JW.ORG е преведен на повече от 1000 езика.
+Съдържа полезни теми и видеоклипове за всички хора.
+Ако желаете, можете да вземете билета.
+Благодаря ви за вниманието. Добър ден.`,
+
+            ceco: `Dobré ráno. Můžu se vás na něco zeptat? Znáte nejpřekládanější webovou stránku na světě?
+A bezplatné webové stránky JW.ORG jsou přeloženy do více než 1000 jazyků.
+Obsahuje užitečná témata a videa pro všechny.
+Pokud chcete, můžete si vzít lístek.
+Děkuji za vaši pozornost. Dobrý den.`,
+
+            cinese: `早安.我可以問你一個問題嗎？你知道世界上翻譯次數最多的網站嗎？
+免費的 JW.ORG 網站已翻譯成 1000 多種語言。
+包含對所有人都有用的主題和影片。
+如果你願意的話，你可以拿這張票。
+感謝您的關注。再會.`,
+
+            croato: `Dobro jutro. Mogu li vam postaviti pitanje? Znate li koja je najprevođenija web stranica na svijetu?
+A besplatna web stranica JW.ORG prevedena je na više od 1000 jezika.
+Sadrži korisne teme i videozapise za sve ljude.
+Ako želite, možete uzeti kartu.
+Hvala vam na pažnji. Dobar dan.`,
+
+            danese: `Godmorgen. Må jeg stille dig et spørgsmål? Kender du den mest oversatte hjemmeside i verden?
+Og den gratis hjemmeside JW.ORG er oversat til mere end 1000 sprog.
+Indeholder nyttige emner og videoer for alle.
+Hvis du ønsker det, kan du tage billetten.
+Tak for din opmærksomhed. God dag.`,
+
+            finlandese: `Hyvää huomenta. Voinko kysyä sinulta kysymyksen? Tiedätkö maailman käännetyimmän verkkosivuston?
+Ja ilmainen JW.ORG-verkkosivusto on käännetty yli 1000 kielelle.
+Sisältää hyödyllisiä aiheita ja videoita kaikille ihmisille.
+Jos haluat, voit ottaa lipun.
+Kiitos huomiostasi. Hyvää päivää.`,
+
+            francese: `Bonjour. Puis-je te poser une question ? Connaissez-vous le site Web le plus traduit au monde ?
+Et le site Web gratuit JW.ORG est traduit dans plus de 1000 langues.
+Contient des sujets et des vidéos utiles pour tous.
+Si vous le souhaitez, vous pouvez prendre le ticket.
+Merci pour votre attention. Bonne journée.`,
+            
+            giapponese: `おはよう。質問してもよろしいでしょうか？世界で最も翻訳されているウェブサイトをご存知ですか?
+無料のJW.ORGウェブサイトは1000以上の言語に翻訳されています。
+すべての人にとって役立つトピックとビデオが含まれています。
+ご希望の場合はチケットをお受け取りいただけます。
+ご清聴ありがとうございました。良い一日。`,
+            
+            greco: `Καλημέρα. Μπορώ να σας κάνω μια ερώτηση; Γνωρίζετε την πιο μεταφρασμένη ιστοσελίδα στον κόσμο;
+Και ο δωρεάν ιστότοπος JW.ORG είναι μεταφρασμένος σε περισσότερες από 1000 γλώσσες.
+Περιέχει χρήσιμα θέματα και βίντεο για όλους.
+Αν θέλετε, μπορείτε να πάρετε το εισιτήριο.
+Σας ευχαριστώ για την προσοχή σας. Καλημέρα.`,
+            
+            hindi: `शुभ प्रभात। क्या मुझे आपसे एक सवाल पूछने की अनुमति है? क्या आप जानते हैं कि दुनिया में सबसे अधिक अनुवादित वेबसाइट कौन सी है?
+और निःशुल्क JW.ORG वेबसाइट का 1000 से अधिक भाषाओं में अनुवाद किया गया है।
+इसमें सभी लोगों के लिए उपयोगी विषय और वीडियो शामिल हैं।
+अगर आप चाहें तो टिकट ले सकते हैं।
+आपके ध्यान देने के लिए धन्यवाद! शुभ दिन।`,
+            
+            inglese: `Good morning. Can I ask you a question? Do you know the most translated website in the world?
+And the free JW.ORG website translated into more than 1000 languages.
+It contains useful topics and videos for all people.
+If you wish, you can take the ticket.
+Thank you for your attention. Have a nice day.`,
+            
+            lituano: `Labas rytas. Ar galiu užduoti klausimą? Ar esate susipažinę su labiausiai pasaulyje išversta svetaine?
+Tai nemokama JW.ORG svetainė, išversta į daugiau nei 1000 kalbų.
+Joje yra naudingų temų ir vaizdo įrašų visiems.
+Jei norite, galite gauti bilietą.
+Dėkoju už dėmesį. Geros dienos.`,
+            
+            norvegese: `God morgen. Kan jeg stille deg et spørsmål? Kjenner du til den mest oversatte nettsiden i verden?
+Og den gratis nettsiden JW.ORG er oversatt til mer enn 1000 språk.
+Inneholder nyttige emner og videoer for alle.
+Hvis du ønsker det, kan du ta billetten.
+Takk for oppmerksomheten. God dag.`,
+            
+            olandese: `Goedemorgen. Mag ik u een vraag stellen? Weet jij welke website het meest vertaald is ter wereld?
+En de gratis website JW.ORG is in meer dan 1000 talen vertaald.
+Bevat nuttige onderwerpen en video's voor iedereen.
+Als u wilt, kunt u het ticket meenemen.
+Dank u voor uw aandacht. Goededag.`,
+            
+            polacco: `Dzień dobry. Czy mogę zadać Ci pytanie? Czy znasz najczęściej tłumaczoną stronę internetową na świecie?
+Bezpłatna strona internetowa JW.ORG została przetłumaczona na ponad 1000 języków.
+Zawiera przydatne tematy i filmy dla każdego.
+Jeśli chcesz, możesz wziąć bilet.
+Dziękuję za uwagę. Dzień dobry.`,
+            
+            portoghese: `Bom dia. Posso fazer-te uma pergunta? Conhece o site mais traduzido do mundo?
+E o site gratuito JW.ORG está traduzido em mais de 1000 línguas.
+Contém tópicos e vídeos úteis para todas as pessoas.
+Se desejar, pode levantar o bilhete.
+Obrigado pela sua atenção. Bom dia.`,
+            
+            rumeno: `Bună dimineaţa. Pot să vă pun o întrebare? Știi care este cel mai tradus site web din lume?
+Iar site-ul gratuit JW.ORG este tradus în peste 1000 de limbi.
+Conține subiecte și videoclipuri utile pentru toți.
+Dacă doriți, puteți lua biletul.
+Vă mulțumim pentru atenție. Bună ziua.`,
+            
+            russo: `Доброе утро. Могу ли я задать вам вопрос? Знаете ли вы самый переводимый сайт в мире?
+А бесплатный сайт JW.ORG переведен более чем на 1000 языков.
+Содержит полезные темы и видео для всех людей.
+Если хотите, можете взять билет.
+Спасибо за внимание. Добрый день.`,
+            
+            spagnolo: `Buen día. ¿Puedo hacerte una pregunta? ¿Conoces cuál es el sitio web más traducido del mundo?
+Y el sitio web gratuito JW.ORG está traducido a más de 1000 idiomas.
+Contiene temas y vídeos útiles para todas las personas.
+Si lo deseas puedes coger el billete.
+Gracias por su atención. Buen día.`,
+            
+            svedese: `God morgon. Får jag ställa en fråga? Känner du till världens mest översatta webbplats?
+Och den kostnadsfria webbplatsen JW.ORG är översatt till fler än 1000 språk.
+Innehåller användbara ämnen och videor för alla.
+Om du vill kan du ta biljetten.
+Tack för din uppmärksamhet. God dag.`,
+            
+            tagalog: `Magandang araw. Maaari ba kitang tanungin? Kilala mo ba ang pinakamalawak na isinaling website
+sa buong mundo? Ito ay ang JW.ORG, libre at isinalin sa mahigit 1000 wika. Naglalaman ito ng mga 
+paksa at video na kapaki-pakinabang para sa lahat ng tao. Kung nais mo, maaari kang kumuha ng tiket. 
+Salamat sa iyong atensyon. Magandang araw!`,
+            
+            tedesco: `Guten Morgen. Kann ich Ihnen eine Frage stellen? Kennen Sie die am häufigsten übersetzte Website der Welt?
+Und die kostenlose Website JW.ORG wird in mehr als 1000 Sprachen übersetzt.
+Enthält nützliche Themen und Videos für alle Menschen.
+Wenn Sie möchten, können Sie das Ticket nehmen.
+Vielen Dank für Ihre Aufmerksamkeit. Guten Tag.`,
+            
+            turco: `Günaydın. Size bir soru sorabilir miyim? Dünyanın en çok tercüme edilen web sitesini biliyor musunuz?
+Ve ücretsiz JW.ORG web sitesi 1000'den fazla dile çevrilmiştir.
+Her kesime hitap eden faydalı konu ve videolar içeriyor.
+Dilerseniz biletinizi alabilirsiniz.
+İlginiz için teşekkür ederiz. İyi günler.`,
+            
+            ungherese: `Jó reggelt. Feltehetek egy kérdést? Tudod, melyik a világ legtöbb nyelvre lefordított weboldala?
+Az ingyenes JW.ORG weboldal több mint 1000 nyelvre van lefordítva.
+Hasznos témákat és videókat tartalmaz mindenki számára.
+Ha szeretnéd, elviheted a jegyet.
+Köszönöm a figyelmet. Jó napot kívánok.`,
+            
+            persiano: `صبح بخیر. میشه یه سوال ازت بپرسم؟ آیا می‌دانید کدام وب‌سایت در جهان بیشترین تعداد ترجمه را دارد؟
+و وب‌سایت رایگان JW.ORG به بیش از ۱۰۰۰ زبان ترجمه شده است.
+شامل مباحث و ویدیوهای مفید برای همه افراد است.
+در صورت تمایل می‌توانید بلیط را تهیه کنید.
+از توجه شما متشکرم. روز بخیر.`,
+            
+            estone: `Tere hommikust. Kas ma võin sulle küsimuse esitada? Kas sa tead maailma enim tõlgitud veebisaiti?
+Ja tasuta veebisait JW.ORG on tõlgitud enam kui 1000 keelde.
+Sisaldab kasulikke teemasid ja videoid kõigile inimestele.
+Soovi korral võid pileti kaasa võtta.
+Tänan tähelepanu eest. Head päeva.`,
+          
+            malayalam: `സുപ്രഭാതം. ഞാൻ ഒരു ചോദ്യം ചോദിക്കട്ടെ? ലോകത്തിൽ ഏറ്റവും കൂടുതൽ വിവർത്തനം ചെയ്യപ്പെട്ട വെബ്‌സൈറ്റ് ഏതാണെന്ന് നിങ്ങൾക്കറിയാമോ?
+കൂടാതെ സൗജന്യ JW.ORG വെബ്‌സൈറ്റ് 1000-ത്തിലധികം ഭാഷകളിലേക്ക് വിവർത്തനം ചെയ്യപ്പെടുന്നു.
+എല്ലാ ആളുകൾക്കും ഉപയോഗപ്രദമായ വിഷയങ്ങളും വീഡിയോകളും അടങ്ങിയിരിക്കുന്നു.
+നിങ്ങൾക്ക് വേണമെങ്കിൽ ടിക്കറ്റ് എടുക്കാം.
+നിങ്ങളുടെ ശ്രദ്ധയ്ക്ക് നന്ദി. ശുഭദിനം.`,
+            
+            punjabi: `ਸਵੇਰ ਦਾ ਸਲਾਮ। ਕੀ ਮੈਂ ਤੁਹਾਨੂੰ ਇੱਕ ਸਵਾਲ ਪੁੱਛ ਸਕਦਾ ਹਾਂ? ਕੀ ਤੁਸੀਂ ਦੁਨੀਆ ਦੀ ਸਭ ਤੋਂ ਵੱਧ ਅਨੁਵਾਦ ਕੀਤੀ ਵੈੱਬਸਾਈਟ ਜਾਣਦੇ ਹੋ?
+ਅਤੇ ਮੁਫ਼ਤ JW.ORG ਵੈੱਬਸਾਈਟ ਦਾ 1000 ਤੋਂ ਵੱਧ ਭਾਸ਼ਾਵਾਂ ਵਿੱਚ ਅਨੁਵਾਦ ਕੀਤਾ ਗਿਆ ਹੈ।
+ਇਸ ਵਿੱਚ ਸਾਰੇ ਲੋਕਾਂ ਲਈ ਲਾਭਦਾਇਕ ਵਿਸ਼ੇ ਅਤੇ ਵੀਡੀਓ ਸ਼ਾਮਲ ਹਨ।
+ਜੇ ਤੁਸੀਂ ਚਾਹੋ ਤਾਂ ਟਿਕਟ ਲੈ ਸਕਦੇ ਹੋ।
+ਤੁਹਾਡੇ ਧਿਆਨ ਲਈ ਧੰਨਵਾਦ। ਦਿਨ ਚੰਗਾ ਹੋਵੇ।`,
+            
+            urdu: `صبح بخیر کیا میں آپ سے ایک سوال پوچھ سکتا ہوں؟ کیا آپ دنیا کی سب سے زیادہ ترجمہ شدہ ویب سائٹ کو جانتے ہیں؟
+اور مفت JW.ORG ویب سائٹ کا 1000 سے زیادہ زبانوں میں ترجمہ کیا جاتا ہے۔
+تمام لوگوں کے لیے مفید عنوانات اور ویڈیوز پر مشتمل ہے۔
+اگر آپ چاہیں تو ٹکٹ لے سکتے ہیں۔
+آپ کی توجہ کا شکریہ۔ اچھا دن`,
+            
+            pashto: `سهار مو پخیر. ایا زه تاسو ته یوه پوښتنه کولی شم؟ ایا تاسو په نړۍ کې ترټولو ژباړل شوې ویب پاڼه پیژنئ؟
+او د JW.ORG سایټ وړیا دی او له 1,000 څخه زیاتو ژبو ته ژباړل شوی.
+دا د ټولو خلکو لپاره ګټور موضوعات او ویډیوګانې لري.
+که تاسو وغواړئ تاسو کولی شئ ټکټ ترلاسه کړئ.
+ستاسو د پاملرنې څخه مننه. ښه ورځ.`,
+                
+            pidgin: `Good morning. I fit ask you one question? You know di world most translated website?
+Na di JW.ORG website, free and dem don translate am for over 1000 languages.
+E get better topics and videos wey go help everybody.
+If you wan, you fit collect di tract.
+Thank you for your time. Have better day,`,
+
+            wolof: `Subag jàmm. Ndax mën naa la laaj dara? Ndax xam nga sitweb biñ gëna tekki làkk ci àdduna bi?
+Ak sitweb JW.ORG biñ tekki ci lu ëpp 1000 làkk te doo fay.
+Dafa def ay topic ak ay wideo yu am njariñ ci ñépp.
+Soo bëggee, mën nga jël këyit wi.
+Noo ngi leen di sant ci seen déglu. Yendul ak jàmm.`,
+            
+            ucraino:`Доброго ранку. Можна поставити вам запитання? Чи знайомі ви з найбільш перекладеним вебсайтом у світі?
+Це безкоштовний вебсайт JW.ORG, перекладений понад 1000 мовами.
+Він містить корисні теми та відео для всіх.
+Якщо хочете, можете отримати квиток.
+Дякую за увагу. Гарного дня.`
+        };
+
+        const audioLinks = { 
+            albanese: 'https://static.wixstatic.com/mp3/aaab41_719b583a96c24f71a91e796db1e79bb7.mp3',
+            arabo: 'https://static.wixstatic.com/mp3/aaab41_baef495b5b7b499ea44f63b470a6232e.mp3',
+            bengalese: 'https://static.wixstatic.com/mp3/aaab41_afa75949cec64552b5bc0219044eda6d.mp3',
+            bulgaro: 'https://static.wixstatic.com/mp3/aaab41_94cce810a3fa488a8e14f0087ee78047.mp3',
+            ceco: 'https://static.wixstatic.com/mp3/aaab41_b722b7c9720343428abea75688c53ad6.mp3',
+            cinese: 'https://static.wixstatic.com/mp3/aaab41_8f32c1043168403c8d4b794545b1ea46.mp3',
+            croato: 'https://static.wixstatic.com/mp3/aaab41_4c90b629869a42d2bfafc050cb766445.mp3',
+            danese: 'https://static.wixstatic.com/mp3/aaab41_7aaf66e8ea5a4090a5388ce0c1240f39.mp3',
+            estone: 'https://static.wixstatic.com/mp3/aaab41_213592427f43419880dea8bb505125a7.mp3',
+            finlandese: 'https://static.wixstatic.com/mp3/aaab41_5073534ce37741cab06329e3d275a709.mp3',
+            francese: 'https://static.wixstatic.com/mp3/aaab41_43061f05dadb4f6f9999cf43cdee3a23.mp3',
+            giapponese: 'https://static.wixstatic.com/mp3/aaab41_0e4617860a1544678c546c80f620514a.mp3',
+            greco: 'https://static.wixstatic.com/mp3/aaab41_5e473af1089f4145a202cef83dacde04.mp3',
+            hindi: 'https://static.wixstatic.com/mp3/aaab41_c741318185764d049b220e3aa863ff95.mp3',
+            inglese: 'https://static.wixstatic.com/mp3/aaab41_6a62de700e5a4c139d6bf049e1af088a.mp3',
+            lituano: 'https://static.wixstatic.com/mp3/aaab41_0ebabf3e820a4334a92832c025071d64.mp3',
+            italiano: 'https://static.wixstatic.com/mp3/aaab41_df6095e73415409a88cc3c220fcba37e.mp3',
+            norvegese: 'https://static.wixstatic.com/mp3/aaab41_89a7ba3a13b44d3ca54a06f0f9bbb44a.mp3',
+            olandese: 'https://static.wixstatic.com/mp3/aaab41_06918055098f46b6b6c16ad44ec60331.mp3',
+            pashto : 'https://static.wixstatic.com/mp3/aaab41_f55e8dc46aee45bf847f810223b9ac6a.mp3',
+            persiano: 'https://static.wixstatic.com/mp3/aaab41_e7ac828e47234b42b2bbab57fe553506.mp3',
+            polacco: 'https://static.wixstatic.com/mp3/aaab41_2e59b60f6b834a7f90926d6c781119c5.mp3',
+            portoghese: 'https://static.wixstatic.com/mp3/aaab41_4a5d0a2b2d674b9dbd1a8402c6927ad1.mp3',
+            rumeno: 'https://static.wixstatic.com/mp3/aaab41_2a83d7ef3c2d40b38e55e283c8186513.mp3',
+            russo: 'https://static.wixstatic.com/mp3/aaab41_26f74b68968e4ce5b876d358e98e429d.mp3',
+            spagnolo: 'https://static.wixstatic.com/mp3/aaab41_e3ff08e87dc1497eb2661c96c8ef592d.mp3',
+            svedese: 'https://static.wixstatic.com/mp3/aaab41_6edd1526e0f04212bd5fd7e4895a8acb.mp3',
+            tagalog: 'https://static.wixstatic.com/mp3/aaab41_83be3a71289d48a4817dfd84e284ce35.mp3',
+            tedesco: 'https://static.wixstatic.com/mp3/aaab41_3ca1bf139f2e47e5b20fc4366a523d96.mp3',
+            turco: 'https://static.wixstatic.com/mp3/aaab41_a68611131e4d444580a15c2a848f0fa3.mp3',
+            ungherese: 'https://static.wixstatic.com/mp3/aaab41_ef729805450b474ba114f75a1b8a2887.mp3',
+            malayalam: 'https://static.wixstatic.com/mp3/aaab41_aa6228cbe7db4421aab87bee20e23cd0.mp3',
+            pidgin: 'https://static.wixstatic.com/mp3/aaab41_b9be8e2171e8471eba1d9442cbae058b.mp3',
+            punjabi: 'https://static.wixstatic.com/mp3/aaab41_532fc1e320f84d16bf4239b2bc667180.mp3',
+            urdu: 'https://static.wixstatic.com/mp3/aaab41_748c6775d2dd43328697d31d87194453.mp3',
+            wolof: 'https://static.wixstatic.com/mp3/aaab41_5c724c2445154397a3bd78d4b198c032.mp3',
+            ucraino: 'https://static.wixstatic.com/mp3/aaab41_bdf162a787494a628f29323613854838.mp3'
+        };
+
+        // Funzione principale per la riproduzione
+        function playLanguage(lang) {
+            const textBox = document.getElementById('textBox');
+            const audio = document.getElementById('audioPlayer');
+            
+            if (texts[lang]) {
+                textBox.innerText = texts[lang];
+                
+                if (audioLinks[lang]) {
+                    audio.src = audioLinks[lang];
+                    audio.style.display = 'block';
+                    audio.load();
+                    audio.play().catch(error => {
+                        console.error('Errore riproduzione:', error);
+                        // Se il browser blocca autoplay, l'utente premerà play manualmente
+                    });
+                } else {
+                    console.error('Audio non trovato per:', lang);
+                    audio.style.display = 'none';
+                }
+            } else {
+                textBox.innerText = "Testo non disponibile per questa lingua.";
+                audio.style.display = 'none';
+            }
+        }
+
+        // Funzione per filtrare le lingue
+        function filterLanguages() {
+            const searchInput = document.getElementById('languageSearch').value.toLowerCase().trim();
+            const buttons = document.querySelectorAll('.lang-btn');
+            let visibleCount = 0;
+
+            buttons.forEach(btn => {
+                const langName = btn.textContent.toLowerCase().replace(/[🪧🔊]/, '').trim(); // pulizia icone
+                if (langName.includes(searchInput) || searchInput === '') {
+                    btn.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    btn.classList.add('hidden');
+                }
+            });
+
+            // Aggiorna contatore
+            const countSpan = document.getElementById('langCount');
+            if (countSpan) {
+                countSpan.textContent = visibleCount + ' lingua' + (visibleCount !== 1 ? 'e' : '');
+            }
+        }
+
+        // Copia testo negli appunti
+        function copyText() {
+            const textBox = document.getElementById('textBox');
+            const text = textBox.innerText;
+            if (text && text !== "👈 Seleziona una lingua per vedere il testo") {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('Testo copiato negli appunti!');
+                }).catch(err => {
+                    console.error('Errore nella copia: ', err);
+                });
+            } else {
+                alert('Nessun testo da copiare. Seleziona prima una lingua.');
+            }
+        }
+
+        // Event listener per il filtro
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('languageSearch');
+            if (searchInput) {
+                searchInput.addEventListener('input', filterLanguages);
+            }
+
+            // Pulsante copia
+            const copyBtn = document.getElementById('copyTextBtn');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', copyText);
+            }
+
+            // Inizializza contatore
+            filterLanguages();
+        });
+    </script>
+</body>
+</html>
